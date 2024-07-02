@@ -10,11 +10,12 @@ internal static class WeatherGenerator
     {
         var randomStart = new Random().Next(1, 10);
         var randomCount = new Random().Next(1, 10);
-        var cityIndex = new Random().Next(0, Cities.Length);
+        
+        var cityIndexRandomizer = new Random();
         
         var date = DateTime.UtcNow;
 
         return Enumerable.Range(randomStart, randomCount)
-            .Select(item => new WeatherForecast(Cities[cityIndex], item * 11 ,date));
+            .Select(item => new WeatherForecast(Cities[cityIndexRandomizer.Next(0, Cities.Length)], item * 11 ,date));
     }
 }
