@@ -27,28 +27,24 @@ public class Worker : BackgroundService
             Partitioner = Partitioner.Consistent
         };
 
+        using var producer = new ProducerBuilder<Null, string>(config).Build();
+
         while (!stoppingToken.IsCancellationRequested)
         {
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            
-            using (var producer = new ProducerBuilder<string, string>(config).Build())
+
+            var weatherForecast = WeatherGenerator.Generate();
+
+            _logger.LogInformation($"Start sending to topic: {_kafkaOptions.Topic}");
+
+            await producer.ProduceAsync(_kafkaOptions.Topic, new Message<Null, string>
             {
-                _logger.LogInformation("Create producer");
+                Value = JsonSerializer.Serialize(weatherForecast)
+            }, stoppingToken);
 
-                var weatherForecast = WeatherGenerator.Generate();
-                
-                _logger.LogInformation($"Start sending to topic: {_kafkaOptions.Topic}");
-                
-                await producer.ProduceAsync(_kafkaOptions.Topic, new Message<string, string>
-                {
-                    Key = weatherForecast.GetHashCode().ToString(),
-                    Value = JsonSerializer.Serialize(weatherForecast)
-                }, stoppingToken);
-                
-                _logger.LogInformation($"Finish sending to topic: {_kafkaOptions.Topic}");
-            }
+            _logger.LogInformation($"Finish sending to topic: {_kafkaOptions.Topic}");
 
-            await Task.Delay(1_000, stoppingToken);
+            await Task.Delay(_kafkaOptions.WaitInSeconds, stoppingToken);
         }
     }
 }

@@ -71,3 +71,8 @@ services:
       KAFKA_BROKERS: kafka1:29092,kafka2:29093,kafka3:29094
       WEB_PORT: 8080
       KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+
+  kafka-producer:
+    build:
+      context: .
+      dockerfile: ./src/producer/KP.Worker/Dockerfile
