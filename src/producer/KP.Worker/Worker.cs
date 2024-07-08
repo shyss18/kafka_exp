@@ -23,8 +23,7 @@ public class Worker : BackgroundService
     {
         var config = new ProducerConfig
         {
-            BootstrapServers = _kafkaOptions.BootstrapServers,
-            Partitioner = Partitioner.Consistent
+            BootstrapServers = _kafkaOptions.BootstrapServers
         };
 
         using var producer = new ProducerBuilder<Null, string>(config).Build();
@@ -44,7 +43,9 @@ public class Worker : BackgroundService
 
             _logger.LogInformation($"Finish sending to topic: {_kafkaOptions.Topic}");
 
-            await Task.Delay(_kafkaOptions.WaitInSeconds, stoppingToken);
+            _logger.LogInformation($"Wait in milliseconds: {_kafkaOptions.WaitInMilliseconds}");
+            
+            await Task.Delay(_kafkaOptions.WaitInMilliseconds, stoppingToken);
         }
     }
 }

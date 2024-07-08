@@ -73,6 +73,37 @@ services:
       KAFKA_SECURITY_PROTOCOL: PLAINTEXT
 
   kafka-producer:
+    depends_on:
+      - redpanda-console
     build:
-      context: .
-      dockerfile: ./src/producer/KP.Worker/Dockerfile
+      context: ./src/producer
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  kafka-consumer1:
+    depends_on: 
+      - redpanda-console
+    build:
+      context: ./src/consumer
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  kafka-consumer2:
+    depends_on: 
+      - redpanda-console
+    build:
+      context: ./src/consumer
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  kafka-consumer3:
+    depends_on: 
+      - redpanda-console
+    build:
+      context: ./src/consumer
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

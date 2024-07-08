@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["KP.Worker/KP.Worker.csproj", "KP.Worker/"]
 RUN dotnet restore "KP.Worker/KP.Worker.csproj"
+
 COPY . .
 WORKDIR "/src/KP.Worker"
 RUN dotnet build "KP.Worker.csproj" -c Release -o /app/build

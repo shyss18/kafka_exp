@@ -6,5 +6,5 @@ public class KafkaOptions
 
     public string Topic { get; set; } = default!;
 
-    public int WaitInSeconds { get; set; } = 5;
+    public int WaitInMilliseconds { get; set; } = 5;
 }
