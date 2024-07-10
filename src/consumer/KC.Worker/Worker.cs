@@ -25,7 +25,7 @@ public class Worker : BackgroundService
         {
             BootstrapServers = _kafkaOptions.BootstrapServers,
             GroupId = _kafkaOptions.GroupId,
-            AutoOffsetReset = AutoOffsetReset.Latest
+            AutoOffsetReset = AutoOffsetReset.Latest,
         };
 
         using var consumer = new ConsumerBuilder<Ignore, string>(config).Build();

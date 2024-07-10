@@ -2,6 +2,8 @@
 
 internal record WeatherForecast
 {
+    public int Id { get; set; }
+    
     public DateTime Date { get; }
     
     public string City { get; }
